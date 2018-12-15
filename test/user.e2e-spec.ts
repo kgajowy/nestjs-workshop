@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { UserRegisterDto, UserRegisterResponseDto } from '../src/user/dto';
+import { UserLoginRequestDto, UserLoginResponseDto, UserRegisterDto, UserRegisterResponseDto } from '../src/user/dto';
 
 const baseUrl = '/user';
 
@@ -36,5 +36,38 @@ describe('UserController (e2e)', () => {
       .then(r => {
         expect(r.body).toMatchObject(expectedResponse);
       });
+  });
+  it('/user/login SUCCESS', () => {
+    const req: UserLoginRequestDto = {
+      email: 'kamil.gajowy@gmail.com',
+      password: '123',
+    };
+    const resBody: UserLoginResponseDto = {
+      token: expect.any(String),
+      user: {
+        id: expect.any(Number),
+        name: 'kamil',
+        email: 'kamil.gajowy@gmail.com',
+      },
+    };
+    return request(app.getHttpServer())
+      .post('/user/login')
+      .send(req)
+      .expect(201)
+      .then(res => {
+        expect(res.body).toMatchObject(resBody);
+      });
+  });
+
+  it('/user/login ERROR', () => {
+    const req: UserLoginRequestDto = {
+      email: 'kamil.gajowy@gmail.com',
+      password: '0004',
+    };
+
+    return request(app.getHttpServer())
+      .post('/user/login')
+      .send(req)
+      .expect(422);
   });
 });

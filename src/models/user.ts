@@ -2,7 +2,7 @@
 export interface UserModel {
   id: number;
   name: string;
-  password: string;
+  password?: string;
   email: string;
   roles?: string[];
   data?: any;

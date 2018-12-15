@@ -15,4 +15,5 @@ describe('User Controller', () => {
     const controller: UserController = module.get<UserController>(UserController);
     expect(controller).toBeDefined();
   });
+
 });
