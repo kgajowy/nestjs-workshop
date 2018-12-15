@@ -45,6 +45,7 @@ export class UserController {
   }
 
   @Post('login')
+  @ApiResponse({ status: 200, description: 'get user by token', type: UserLoginResponseDto})
   async login(@Body() credentials: UserLoginRequestDto): Promise<UserLoginResponseDto> {
     if (credentials.password !== '123') {
       throw new HttpException('ValidationError', HttpStatus.UNPROCESSABLE_ENTITY);
